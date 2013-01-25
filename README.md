@@ -1,13 +1,13 @@
 # Lanyard Narrowboats
 A system for a Lanyard Narrowboats (fictional company). Work required for Business Computing Module at Oxford Brookes University.
 
-**Authors**
+**Authors**    
 [Ryan Smith](github.com/ryansmith94)   
 [Josh Wiseman]()   
 [Asia Bee]()   
 [Curtis Hamilton]()   
 [Faisal Nagi]()   
 
-**Information**
+**Information**    
 [Style Guide](https://github.com/ryansmith94/LanyardNarrowboats/blob/master/STYLE.md)
 [Licence](https://github.com/ryansmith94/LanyardNarrowboats/blob/master/LICENCE)
