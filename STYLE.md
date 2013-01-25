@@ -7,16 +7,18 @@ Maximum Line Length: Should be 80 (don't worry about this too much).
 
 ### Blank Lines
 * Two blank lines between functions (except methods - use one blank line between methods).   
+        
         def foo():
             # Some Code.
-
-
+        
+        
         def bar():
             # Some Code.
 
 * One blank line between a function and a class.   
+        
         class className():
-
+        
             def functionName():
                 # Some Code.
 
@@ -32,6 +34,7 @@ Maximum Line Length: Should be 80 (don't worry about this too much).
 ### Imports
 * Imports should always go at the top of the file.
 * Use imports on separate lines.   
+        
         import this
         import that
 
