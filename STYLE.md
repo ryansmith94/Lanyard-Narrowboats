@@ -1,5 +1,5 @@
 # Style
-Many of the styles below are from the [PEP 8 Style Guide for Python Code](http://www.python.org/dev/peps/pep-0008/#whitespace-in-expressions-and-statements).
+These styles are a simplified version of those from the [PEP 8 Style Guide for Python Code](http://www.python.org/dev/peps/pep-0008/#whitespace-in-expressions-and-statements).
 
 ## Code Layout
 Indentation: 4 Spaces (do not use tabs).   
