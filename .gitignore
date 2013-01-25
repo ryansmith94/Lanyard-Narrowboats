@@ -1,5 +1,6 @@
 # Mac
 .DS_Store
 
-# Python Caching
+# Python Auto-Generated
 __pycache__
+src/*.pyc
