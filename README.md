@@ -2,11 +2,11 @@
 A system for a Lanyard Narrowboats (fictional company). Work required for Business Computing Module at Oxford Brookes University.
 
 # Authors
-[Ryan Smith](github.com/ryansmith94)
-[Josh Wiseman]
-[Asia Bee]
-[Curtis Hamilton]
-[Faisal Nagi]
+[Ryan Smith](github.com/ryansmith94)   
+[Josh Wiseman]   
+[Asia Bee]   
+[Curtis Hamilton]   
+[Faisal Nagi]   
 
 # Style
 Many of the styles below are from the [PEP 8 Style Guide for Python Code](http://www.python.org/dev/peps/pep-0008/#whitespace-in-expressions-and-statements).
