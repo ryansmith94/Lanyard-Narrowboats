@@ -33,7 +33,7 @@ class User(object):
         return self._name
 
     def getAddress(self):
-        return self._address + self._postcode
+        return self._contact["address"] + self._contact["postcode"]
 
     def getPhone(self):
         return self._phone
