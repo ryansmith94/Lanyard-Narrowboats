@@ -3,49 +3,49 @@ import unittest
 
 
 class TestUser(unittest.TestCase):
+    INITIAL_NAME = "John Smith"
 
     def setUp(self):
-        self._user = classes.User("John Smith")
+        self._user = classes.User(TestUser.INITIAL_NAME)
 
     def testName(self):
         USER = self._user
-        GET_FN = USER.getName
-        VALID = "1 Zero St, ZeroTown, CountyZero, ZZ0 0ZZ"
-        MSG = "User Name Error"
 
-        result = GET_FN()
-        self.assertEqual(result, "John Smith", MSG)
-
-        result = self.erroneousTest(USER.setName, GET_FN, VALID)
-        self.assertEqual(result, 0, MSG)
-
-        return self
+        return self.checkProperty(
+            USER.getName,
+            USER.setName,
+            "Valid Name",
+            "User Name Error",
+            TestUser.INITIAL_NAME
+        )
 
     def testAddress(self):
         USER = self._user
-        GET_FN = USER.getAddress
-        VALID = "1 Zero St, ZeroTown, CountyZero, ZZ0 0ZZ"
-        MSG = "User Address Error"
 
-        result = GET_FN()
-        self.assertEqual(result, "", MSG)
-
-        result = self.erroneousTest(USER.setAddress, GET_FN, VALID)
-        self.assertEqual(result, 0, MSG)
-
-        return self
+        return self.checkProperty(USER.getAddress,
+            USER.setAddress,
+            "1 Zero St, ZeroTown, CountyZero, ZZ0 0ZZ",
+            "User Address Error",
+            ""
+        )
 
     def testPhone(self):
         USER = self._user
-        GET_FN = USER.getPhone
-        VALID = "00000000000"
-        MSG = "User Phone Error"
 
-        result = GET_FN()
-        self.assertEqual(result, "", MSG)
+        return self.checkProperty(
+            USER.getPhone,
+            USER.setPhone,
+            "00000000000",
+            "User Phone Error",
+            ""
+        )
 
-        result = self.erroneousTest(USER.setPhone, GET_FN, VALID)
-        self.assertEqual(result, 0, MSG)
+    def checkProperty(self, getFn, setFn, valid, msg, start):
+        result = getFn()
+        self.assertEqual(result, start, msg)
+
+        result = self.erroneousTest(setFn, getFn, valid)
+        self.assertEqual(result, 0, msg)
 
         return self
 
