@@ -9,5 +9,5 @@ A system for a Lanyard Narrowboats (fictional company). Work required for Busine
 [Faisal Nagi]()   
 
 **Information**    
-[Style Guide](https://github.com/ryansmith94/LanyardNarrowboats/blob/master/STYLE.md)
-[Licence](https://github.com/ryansmith94/LanyardNarrowboats/blob/master/LICENCE)
+[Style Guide](https://github.com/ryansmith94/LanyardNarrowboats/blob/master/STYLE.md)    
+[Licence](https://github.com/ryansmith94/LanyardNarrowboats/blob/master/LICENCE)   
