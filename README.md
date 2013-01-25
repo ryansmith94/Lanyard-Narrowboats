@@ -12,8 +12,8 @@ A system for a Lanyard Narrowboats (fictional company). Work required for Busine
 Many of the styles below are from the [PEP 8 Style Guide for Python Code](http://www.python.org/dev/peps/pep-0008/#whitespace-in-expressions-and-statements).
 
 ## Code Layout
-Indentation: 4 Spaces (do not use tabs).
-Maximum Line Length: Should be 80 (don't worry about this too much).
+Indentation: 4 Spaces (do not use tabs).   
+Maximum Line Length: Should be 80 (don't worry about this too much).   
 
 ### Blank Lines
 * Two blank lines between functions (except methods - use one blank line between methods).   
