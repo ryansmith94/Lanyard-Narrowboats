@@ -23,6 +23,7 @@ Maximum Line Length: Should be 80 (don't worry about this too much).
                 # Some Code.
 
 * One blank line between logical blocks of code.
+        
         # This does this.
         x = foo()
         y = bar()
