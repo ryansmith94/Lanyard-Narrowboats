@@ -20,4 +20,4 @@ Lanyard Narrowboats, the bespoke business management system for Lanyard Narrowbo
 To test the source code, run `src/testing.py`.
 
 If you're on Mac, just open up the terminal and type...
-python src/testing.py
+  python src/testing.py
