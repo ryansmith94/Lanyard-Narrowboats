@@ -2,7 +2,7 @@
 A system for a Lanyard Narrowboats (fictional company). Work required for Business Computing Module at Oxford Brookes University.
 
 **Authors**    
-[Ryan Smith](github.com/ryansmith94)   
+[Ryan Smith](http://www.github.com/ryansmith94)    
 [Josh Wiseman]()   
 [Asia Bee]()   
 [Curtis Hamilton]()   
