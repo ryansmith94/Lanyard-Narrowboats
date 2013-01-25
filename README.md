@@ -1,4 +1,4 @@
-# LanyardNarrowboats
+# Lanyard Narrowboats
 A system for a Lanyard Narrowboats (fictional company). Work required for Business Computing Module at Oxford Brookes University.
 
 # Authors
@@ -16,7 +16,7 @@ Indentation: 4 Spaces (do not use tabs).
 Maximum Line Length: Should be 80 (don't worry about this too much).
 
 ### Blank Lines
-* Two blank lines between functions.   
+* Two blank lines between functions (except methods - use one blank line between methods).   
         def foo():
             # Some Code.
 
