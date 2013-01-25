@@ -3,10 +3,10 @@ A system for a Lanyard Narrowboats (fictional company). Work required for Busine
 
 # Authors
 [Ryan Smith](github.com/ryansmith94)   
-[Josh Wiseman]   
-[Asia Bee]   
-[Curtis Hamilton]   
-[Faisal Nagi]   
+[Josh Wiseman]()   
+[Asia Bee]()   
+[Curtis Hamilton]()   
+[Faisal Nagi]()   
 
 # Style
 Many of the styles below are from the [PEP 8 Style Guide for Python Code](http://www.python.org/dev/peps/pep-0008/#whitespace-in-expressions-and-statements).
