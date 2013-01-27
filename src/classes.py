@@ -64,6 +64,7 @@ class Boat(object):
     def __init__(self, name, description):
         self._name = name
         self._description = description
+        self._owners = []
 
     def setName(self, name):
         self._name = name
@@ -78,6 +79,17 @@ class Boat(object):
 
     def getDescription(self):
         return self._description
+
+    def addOwner(self, owner):
+        self._owners.append(owner)
+        return self
+
+    def removeOwner(self, owner):
+        self._owners.pop(self._owners.index(owner))
+        return self
+
+    def getOwners(self):
+        return self._owners
 
 
 def validString(value, minLength, maxLength):
