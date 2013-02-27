@@ -1,4 +1,6 @@
 import sqlite3
+# TODO: Add property types.
+# TODO: Create test code for this file.
 conn = sqlite3.connect("narrowboats.db")
  
 cursor = conn.cursor()
@@ -48,7 +50,7 @@ cursor.execute("""CREATE TABLE holidayBooking (
     paymentInfo
 )""")
 
-#Faisal please enter your attribute names below, USING THE SAME FORMAT
+# TODO: @Faisal please enter your attribute names below, USING THE SAME FORMAT
 cursor.execute("""CREATE TABLE owner (
 
 )""")
