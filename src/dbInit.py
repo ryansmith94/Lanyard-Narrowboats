@@ -53,6 +53,30 @@ cursor.execute("""CREATE TABLE owner (
 
 )""")
 
+cursor.execute("""CREATE TABLE boat (
+    boatId,
+    name,
+    description
+)""")
+
+cursor.execute("""CREATE TABLE part (
+    partId,
+    partQuantity,
+    partDescription
+)""")
+
+cursor.execute("""CREATE TABLE jobpart (
+   jobId,
+   partId
+)""")
+
+cursor.execute("""CREATE TABLE holidayboat (
+   boatId,
+   boatName,
+   purchaseDate,
+   maxBerth
+)""")
+
 cursor.close()
 
 conn.commit()
