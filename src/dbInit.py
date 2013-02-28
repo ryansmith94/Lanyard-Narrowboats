@@ -2,9 +2,9 @@ import sqlite3
 # TODO: Add property types.
 # TODO: Create test code for this file.
 conn = sqlite3.connect("narrowboats.db")
- 
+
 cursor = conn.cursor()
- 
+
 # create table
 cursor.execute("""CREATE TABLE customer (
     customerId,
