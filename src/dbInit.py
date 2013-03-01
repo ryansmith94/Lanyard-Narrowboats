@@ -1,5 +1,5 @@
 import sqlite3
-# TODO: Add property types.
+# TODO: Add constraints.
 # TODO: Create test code for this file.
 conn = sqlite3.connect("narrowboats.db")
 
