@@ -7,47 +7,49 @@ cursor = conn.cursor()
 
 # create table
 cursor.execute("""CREATE TABLE customer (
-    customerId,
-    name,
-    address,
-    postCode,
-    phoneNumber
+    customerId INT PRIMARY KEY,
+    name TEXT,
+    address TEXT,
+    postCode VARCHAR2(10),
+    phoneNumber INT
 )""")
 
+# http://stackoverflow.com/questions/4272908/sqlite-date-storage-and-conversion
 cursor.execute("""CREATE TABLE job (
-    jobId,
-    customerId,
-    boatId,
-    jobDescription,
-    jobStatus,
-    jobDate,
-    jobDateCompleted,
-    price,
-    paid,
-    paymentInfo
+    jobId INT PRIMARY KEY,
+    customerId INT,
+    boatId INT,
+    jobDescription TEXT,
+    jobStatus TEXT,
+    jobDate DATE,
+    jobDateCompleted DATE,
+    price REAL,
+    paid BOOLEAN,
+    paymentInfo TEXT,
 )""")
 
 cursor.execute("""CREATE TABLE lease (
-    customerId,
-    boatId,
-    dateFrom,
-    dateTo,
-    mooringId,
-    datePurchased,
-    price,
-    vat,
-    package,
-    paymentInfo
+    customerId INT NOT NULL,
+    boatId INT NOT NULL,
+    dateFrom DATE NOT NULL,
+    dateTo DATE NOT NULL,
+    mooringId INT NOT NULL,
+    datePurchased DATE NOT NULL,
+    price REAL NOT NULL,
+    vat INT NOT NULL,
+    package BOOLEAN DEFAULT 0,
+    paymentInfo TEXT NOT NULL,
 )""")
 
 cursor.execute("""CREATE TABLE holidayBooking (
-    boatId,
-    boatName,
-    dateTo,
-    dateFrom,
-    berth,
-    available,
-    paymentInfo
+    boatId INT,
+    boatName TEXT,
+    dateTo DATE,
+    dateFrom DATE,
+    berth INT,
+    available BOOLEAN,
+    paymentInfo TEXT,
+    CONSTRAINT pkey PRIMARY KEY (boatId, dateFrom)
 )""")
 
 # TODO: @Faisal please enter your attribute names below, USING THE SAME FORMAT
@@ -56,27 +58,29 @@ cursor.execute("""CREATE TABLE owner (
 )""")
 
 cursor.execute("""CREATE TABLE boat (
-    boatId,
-    name,
-    description
+    boatId INT PRIMARY KEY,
+    name TEXT,
+    description TEXT
 )""")
 
 cursor.execute("""CREATE TABLE part (
-    partId,
-    partQuantity,
-    partDescription
+    partId INT PRIMARY KEY,
+    partQuantity INT,
+    partDescription TEXT
 )""")
 
 cursor.execute("""CREATE TABLE jobpart (
-   jobId,
-   partId
+   jobId INT,
+   partId INT,
+   CONSTRAINT pkey PRIMARY KEY (jobId, partId)
 )""")
 
 cursor.execute("""CREATE TABLE holidayboat (
-   boatId,
-   boatName,
-   purchaseDate,
-   maxBerth
+   boatId INT,
+   boatName TEXT,
+   purchaseDate DATE,
+   maxBerth INT,
+   CONSTRAINT pkey PRIMARY KEY (boatId, purchaseDate)
 )""")
 
 cursor.close()
