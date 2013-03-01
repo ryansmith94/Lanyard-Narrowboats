@@ -55,7 +55,6 @@ cursor.execute("""CREATE TABLE holidayBooking (
     CONSTRAINT pkey PRIMARY KEY (boatId, dateFrom)
 )""")
 
-# TODO: @Faisal please enter your attribute names below, USING THE SAME FORMAT
 cursor.execute("""CREATE TABLE owner (
 
 )""")
