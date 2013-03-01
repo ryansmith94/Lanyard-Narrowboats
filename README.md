@@ -19,4 +19,4 @@ Lanyard Narrowboats, the bespoke business management system for Lanyard Narrowbo
 [Implementation Demo](https://docs.google.com/presentation/d/1L_FZ3buAi-Cu1WR-KxNjzNIscbAqk8Hdi9h49Jfrzmw/edit#slide=id.p)   
 
 **Testing**   
-To test the source code, run `src/testing.py`.
+To test the source code, run `src/testing.py` (File needs to be added).
