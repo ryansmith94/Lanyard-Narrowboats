@@ -39,6 +39,9 @@ cursor.execute("""CREATE TABLE lease (
     vat INT NOT NULL,
     package BOOLEAN DEFAULT 0,
     paymentInfo TEXT NOT NULL,
+    CONSTRAINT pkey PRIMARY KEY (mooringId, datePurchased),
+    CONSTRAINT fkeyCustomer FOREIGN KEY (customerId) REFERENCES customer(customerId),
+    CONSTRAINT fkeyBoat FOREIGN KEY (boatId) REFERENCES boat(boatId)
 )""")
 
 cursor.execute("""CREATE TABLE holidayBooking (
