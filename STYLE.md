@@ -1,6 +1,8 @@
 # Style
 These styles are a simplified version of those from the [PEP 8 Style Guide for Python Code](http://www.python.org/dev/peps/pep-0008/#whitespace-in-expressions-and-statements).
 
+The majority of these rules, if not all of them are enforced by [PYCH](http://pych.atomidata.com/) and therefore you may use that to validate your coding style.
+
 ## Code Layout
 Indentation: 4 Spaces (do not use tabs).   
 Maximum Line Length: Should be 80 (don't worry about this too much).   
