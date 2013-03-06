@@ -7,7 +7,7 @@ cursor = conn.cursor()
 
 # create table
 cursor.execute("""CREATE TABLE customer (
-    customerId INT PRIMARY KEY,
+    customerId INT PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     address TEXT,
     postCode VARCHAR2(10),
