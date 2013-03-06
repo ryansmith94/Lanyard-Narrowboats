@@ -71,13 +71,13 @@ cursor.execute("""CREATE TABLE part (
     partDescription TEXT
 )""")
 
-cursor.execute("""CREATE TABLE jobpart (
+cursor.execute("""CREATE TABLE jobPart (
    jobId INT,
    partId INT,
    CONSTRAINT pkey PRIMARY KEY (jobId, partId)
 )""")
 
-cursor.execute("""CREATE TABLE holidayboat (
+cursor.execute("""CREATE TABLE holidayBoat (
    boatId INT,
    boatName TEXT,
    purchaseDate DATE,
