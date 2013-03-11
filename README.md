@@ -4,7 +4,7 @@ Lanyard Narrowboats, the bespoke business management system for Lanyard Narrowbo
 [Ryan Smith](http://www.github.com/ryansmith94)    
 [Josh Wiseman](https://github.com/notshaggy)   
 [Asia Bee](https://github.com/asia-b)   
-[Faisal Nagi]()   
+[Faisal Nagi](https://github.com/faisal87)   
 
 **Information**    
 [Style Guide](https://github.com/ryansmith94/LanyardNarrowboats/blob/master/STYLE.md)    
