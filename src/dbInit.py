@@ -6,12 +6,22 @@ conn = sqlite3.connect("narrowboats.db")
 cursor = conn.cursor()
 
 # create table
+cursor.execute("""DROP TABLE IF EXISTS customer""")
+cursor.execute("""DROP TABLE IF EXISTS job""")
+cursor.execute("""DROP TABLE IF EXISTS lease""")
+cursor.execute("""DROP TABLE IF EXISTS holidayBooking""")
+cursor.execute("""DROP TABLE IF EXISTS owner""")
+cursor.execute("""DROP TABLE IF EXISTS boat""")
+cursor.execute("""DROP TABLE IF EXISTS part""")
+cursor.execute("""DROP TABLE IF EXISTS jobPart""")
+cursor.execute("""DROP TABLE IF EXISTS holidayBoat""")
+
 cursor.execute("""CREATE TABLE customer (
-    customerId INT PRIMARY KEY AUTOINCREMENT,
+    customerId INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     address TEXT,
     postCode VARCHAR2(10),
-    phoneNumber INT
+    phoneNumber VARCHAR2(11)
 )""")
 
 # http://stackoverflow.com/questions/4272908/sqlite-date-storage-and-conversion
@@ -25,7 +35,7 @@ cursor.execute("""CREATE TABLE job (
     jobDateCompleted DATE,
     price REAL,
     paid BOOLEAN,
-    paymentInfo TEXT,
+    paymentInfo TEXT
 )""")
 
 cursor.execute("""CREATE TABLE lease (
@@ -55,9 +65,9 @@ cursor.execute("""CREATE TABLE holidayBooking (
     CONSTRAINT pkey PRIMARY KEY (boatId, dateFrom)
 )""")
 
-cursor.execute("""CREATE TABLE owner (
+#cursor.execute("""CREATE TABLE owner (
 
-)""")
+#)""")
 
 cursor.execute("""CREATE TABLE boat (
     boatId INT PRIMARY KEY,
@@ -84,6 +94,24 @@ cursor.execute("""CREATE TABLE holidayBoat (
    maxBerth INT,
    CONSTRAINT pkey PRIMARY KEY (boatId, purchaseDate)
 )""")
+
+name = "John Smith"
+address = "Wheatley or summink"
+cursor.execute("""INSERT INTO customer(name, address, postCode, phoneNumber) VALUES (
+    ?,
+    ?,
+    "OX3 7JJ",
+    "01927364857"
+)""", [name, address])
+
+cursor.execute("""INSERT INTO customer(name, address, postCode, phoneNumber) VALUES (
+    ?,
+    ?,
+    "OX3 7JJ",
+    "12345678912"
+)""", [name, address])
+
+print(cursor.execute("""SELECT * FROM customer""").fetchall()[1][4])
 
 cursor.close()
 
