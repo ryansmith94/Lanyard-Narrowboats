@@ -2,10 +2,9 @@ import sqlite3
 # TODO: Add constraints.
 # TODO: Create test code for this file.
 conn = sqlite3.connect("narrowboats.db")
-
 cursor = conn.cursor()
 
-# create table
+# Drops all the tables before recreating them.
 cursor.execute("""DROP TABLE IF EXISTS customer""")
 cursor.execute("""DROP TABLE IF EXISTS job""")
 cursor.execute("""DROP TABLE IF EXISTS lease""")
@@ -16,6 +15,7 @@ cursor.execute("""DROP TABLE IF EXISTS part""")
 cursor.execute("""DROP TABLE IF EXISTS jobPart""")
 cursor.execute("""DROP TABLE IF EXISTS holidayBoat""")
 
+# create table
 cursor.execute("""CREATE TABLE customer (
     customerId INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
@@ -95,6 +95,7 @@ cursor.execute("""CREATE TABLE holidayBoat (
    CONSTRAINT pkey PRIMARY KEY (boatId, purchaseDate)
 )""")
 
+# Example of how to add and retrieve data from the database.
 name = "John Smith"
 address = "Wheatley or summink"
 cursor.execute("""INSERT INTO customer(name, address, postCode, phoneNumber) VALUES (
@@ -113,7 +114,7 @@ cursor.execute("""INSERT INTO customer(name, address, postCode, phoneNumber) VAL
 
 print(cursor.execute("""SELECT * FROM customer""").fetchall()[1][4])
 
+# Commits and closes the database.
 cursor.close()
-
 conn.commit()
 conn.close()
