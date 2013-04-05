@@ -11,7 +11,6 @@ def accessDb(fn):
             cursor.execute("""PRAGMA foreign_keys=ON;""")
             fn(cursor)
         except Exception as ex:
-            print(ex)
             ex = ex.args[0].replace("constraint ", "").replace(" failed", "")
             if ex in DB_EXCEPTIONS:
                 ui.errorMsg(DB_EXCEPTIONS[ex])
@@ -61,11 +60,10 @@ def viewJobs(win):
         # Remove assignee.
         cursor.execute("UPDATE jobs SET assigneeId = ? WHERE jobId = ?", [None, jobId])
 
-        # Get required skills.
-        skills = [skill[0] for skill in cursor.execute("SELECT skill FROM skills WHERE id = ? AND job = 1", [jobId]).fetchall()]
-
         # Get and add new assignee.
-        cursor.execute("UPDATE jobs SET assigneeId = ? WHERE jobId = ?", [getAssignee(cursor, skills), jobId])
+        cursor.execute("UPDATE jobs SET assigneeId = ? WHERE jobId = ?", [getAssignee(cursor, jobId), jobId])
+
+        displayJobs(cursor)
 
     jobIds = []
 
@@ -98,9 +96,12 @@ def viewEmployees(win):
     def removeEmployee(cursor):
         selected = int(listBox.curselection()[0])
         employeeId = employeeIds[selected]
-        cursor.execute("UPDATE jobs SET assigneeId = ? WHERE assigneeId = ?", [None, employeeId])
+        cursor.execute("UPDATE jobs SET assigneeId = NULL WHERE assigneeId = ?", [employeeId])
         cursor.execute("DELETE FROM skills WHERE id = ? AND job = 0", [employeeId])
         cursor.execute("DELETE FROM employees WHERE employeeId = ?", [employeeId])
+        freeJobs = cursor.execute("SELECT jobId FROM jobs WHERE assigneeId IS NULL AND status = 'Incomplete'").fetchall()
+        for job in freeJobs:
+            cursor.execute("UPDATE jobs SET assigneeId = ? WHERE jobId = ?", [getAssignee(cursor, job[0]), job[0]])
         employeeIds.pop(selected)
         listBox.delete(selected)
 
@@ -117,15 +118,21 @@ def viewEmployees(win):
     ui.button(win, "Add", accessDb(addEmployee))
     ui.button(win, "Remove", accessDb(removeEmployee))
     ui.button(win, "Skills", clickSkills)
+    ui.button(win, "Refresh", accessDb(displayEmployees))
     listBox = ui.listBox(win, ["Employee Id", "Name"])
     accessDb(displayEmployees)()
 
 
 def viewSkills(win, id, isJob):
     def addSkill(cursor):
-        cursor.execute("""INSERT INTO skills(id, skill, job) VALUES(?, ?, ?)""", [id, skill.get(), isJob])
-        listBox.insert(ui.END, skill.get())
-        skill.delete(0, ui.END)
+        table = "job" if isJob == True else "employee"
+        results = cursor.execute("SELECT * FROM " + table + "s WHERE " + table + "Id = ?", [id]).fetchall()
+        if (len(results) != 0):
+            cursor.execute("""INSERT INTO skills(id, skill, job) VALUES(?, ?, ?)""", [id, skill.get(), isJob])
+            listBox.insert(ui.END, skill.get())
+            skill.delete(0, ui.END)
+        else:
+            raise Exception("ID no longer exists.")
 
     def displaySkills(cursor):
         skills = cursor.execute("SELECT skill FROM skills WHERE id = ? AND job = ?""", [id, isJob]).fetchall()
@@ -172,8 +179,10 @@ def viewMenu(win):
     win.grid_columnconfigure(0, minsize=300)
 
 
-def getAssignee(cursor, jobSkills=[]):
+def getAssignee(cursor, jobId=None):
+    jobSkills = [skill[0] for skill in cursor.execute("SELECT skill FROM skills WHERE id = ? AND job = 1", [jobId]).fetchall()]
     skills = len(jobSkills)
+
     queryA = """SELECT id, COUNT(*) AS skills
         FROM skills
         WHERE job = 0 """ + ("" if skills == 0 else " AND skill IN (" + ("?, " * skills)[:-2] + ")") + """

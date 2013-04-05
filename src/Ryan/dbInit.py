@@ -74,16 +74,6 @@ cursor.execute("INSERT INTO boats(name, ownerId, description) VALUES (?, ?, ?)",
 
 # Test Employees.
 cursor.execute("INSERT INTO employees(name) VALUES(?)", ["Alan Flowers"])
-cursor.execute("INSERT INTO employees(name) VALUES(?)", ["Tommy Turing"])
-
-# Test Employee Skills.
-cursor.execute("INSERT INTO skills(id, skill, job) VALUES(?, ?, ?)", [2, "Engines", False])
-
-# Test Jobs.
-cursor.execute("INSERT INTO jobs(description, customerId, boatId, workHours, status, date) VALUES(?, ?, ?, ?, ?, ?)", ["Fix engine.", 2, 1, 5, "Incomplete", "2013-03-30"])
-
-# Test Job Skills.
-cursor.execute("INSERT INTO skills(id, skill, job) VALUES(?, ?, ?)", [1, "Engines", True])
 
 # Commits and closes the database.
 cursor.close()
