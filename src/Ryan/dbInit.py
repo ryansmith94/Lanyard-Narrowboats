@@ -74,6 +74,10 @@ cursor.execute("INSERT INTO boats(name, ownerId, description) VALUES (?, ?, ?)",
 
 # Test Employees.
 cursor.execute("INSERT INTO employees(name) VALUES(?)", ["Alan Flowers"])
+cursor.execute("INSERT INTO employees(name) VALUES(?)", ["Jimmy"])
+
+# Test Jobs.
+cursor.execute("""INSERT INTO jobs(description, customerId, boatId, workHours, date, status, assigneeId) VALUES(?, ?, ?, ?, DATE('now'), 'Incomplete', ?)""", ["Broken engine.", 2, 2, 1, 1])
 
 # Commits and closes the database.
 cursor.close()

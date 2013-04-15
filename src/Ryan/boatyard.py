@@ -1,5 +1,4 @@
 import ryanUi as ui
-from datetime import datetime as dt
 from sqlite3 import connect as sql
 
 
@@ -40,11 +39,11 @@ def viewJobs(win):
         jobId = jobIds[int(listBox.curselection()[0])]
         ui.window("Job Skills", lambda win: viewSkills(win, jobId, True))
 
-    def clickCompleted(cursor):
+    def clickStatus(cursor, newStatus):
         selected = int(listBox.curselection()[0])
         jobId = jobIds[selected]
-        cursor.execute("UPDATE jobs SET status = 'Complete' WHERE jobId = ?", [jobId])
-        if status.get() != "Complete":
+        cursor.execute("UPDATE jobs SET status = ?, date = DATE('now') WHERE jobId = ?", [newStatus, jobId])
+        if status.get() != newStatus:
             jobIds.pop(selected)
             listBox.delete(selected)
 
@@ -71,9 +70,9 @@ def viewJobs(win):
     ui.button(win, "Add", lambda: ui.window("Add Job", addJob))
     ui.button(win, "Reassign", accessDb(reassignJob))
     ui.button(win, "Skills", clickSkills)
-    ui.button(win, "Incompleted", lambda: False)  # Do not implement.
-    ui.button(win, "Completed", accessDb(clickCompleted))
-    ui.button(win, "Paid", lambda: False)  # Do not implement.
+    ui.button(win, "Incomplete", accessDb(lambda cursor: clickStatus(cursor, "Incomplete")))
+    ui.button(win, "Complete", accessDb(lambda cursor: clickStatus(cursor, "Complete")))
+    ui.button(win, "Paid", accessDb(lambda cursor: clickStatus(cursor, "Paid")))
     ui.button(win, "Refresh", accessDb(displayJobs))
     status = ui.dropDown(win, ["Incomplete", "Complete", "Paid"], lambda evt: accessDb(displayJobs)())
     listBox = ui.listBox(win, ["Job Id", "Date", "Assignee", "Customer", "Boat", "Description"], 30)
@@ -163,9 +162,8 @@ def addJob(win):
         assert customer.get() != "", "No customer entered."
         assert boat.get() != "", "No boat entered."
         assert float(workHours.get()), "No work hours entered."
-        now = dt.now()
         assigneeId = getAssignee(cursor)
-        cursor.execute("""INSERT INTO jobs(description, customerId, boatId, workHours, date, status, assigneeId) VALUES(?, ?, ?, ?, ?, 'Incomplete', ?)""", [description.get(), customer.get(), boat.get(), workHours.get(), now.strftime("%Y-%m-%d"), assigneeId])
+        cursor.execute("""INSERT INTO jobs(description, customerId, boatId, workHours, date, status, assigneeId) VALUES(?, ?, ?, ?, DATE('now'), 'Incomplete', ?)""", [description.get(), customer.get(), boat.get(), workHours.get(), assigneeId])
         win.destroy()
 
     # Make UI.
@@ -224,4 +222,6 @@ DB_EXCEPTIONS["No customer entered."] = "No customer entered."
 DB_EXCEPTIONS["No boat entered."] = "No boat entered."
 DB_EXCEPTIONS["No work hours entered."] = "No work hours entered."
 DB_EXCEPTIONS["No employee entered."] = "No employee entered."
+
+# Show User Interface.
 ui.window("Menu", lambda win: viewMenu(win))
