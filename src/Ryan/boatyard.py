@@ -37,7 +37,7 @@ def viewHolidays(win):
 def viewJobs(win):
     def clickSkills():
         jobId = jobIds[int(listBox.curselection()[0])]
-        ui.window("Job Skills", lambda win: viewSkills(win, jobId, True))
+        ui.window("Job Skills", lambda win: viewSkills(win, jobId, "Job"))
 
     def clickStatus(cursor, newStatus):
         selected = int(listBox.curselection()[0])
@@ -82,7 +82,7 @@ def viewJobs(win):
 def viewEmployees(win):
     def clickSkills():
         employeeId = employeeIds[int(listBox.curselection()[0])]
-        ui.window("Employee Skills", lambda win: viewSkills(win, employeeId, False))
+        ui.window("Employee Skills", lambda win: viewSkills(win, employeeId, "Employee"))
 
     def addEmployee(cursor):
         cursor.execute("""INSERT INTO employees(name) VALUES(?)""", [name.get()])
@@ -122,19 +122,18 @@ def viewEmployees(win):
     accessDb(displayEmployees)()
 
 
-def viewSkills(win, id, isJob):
+def viewSkills(win, id, table):
     def addSkill(cursor):
-        table = "job" if isJob == True else "employee"
-        results = cursor.execute("SELECT * FROM " + table + "s WHERE " + table + "Id = ?", [id]).fetchall()
+        results = cursor.execute("SELECT * FROM " + table.lower() + "s WHERE " + table + "Id = ?", [id]).fetchall()
         if (len(results) != 0):
-            cursor.execute("""INSERT INTO skills(id, skill, job) VALUES(?, ?, ?)""", [id, skill.get(), isJob])
+            cursor.execute("""INSERT INTO skills(id, skill, job) VALUES(?, ?, ?)""", [id, skill.get(), table == "Job"])
             listBox.insert(ui.END, skill.get())
             skill.delete(0, ui.END)
         else:
             raise Exception("ID no longer exists.")
 
     def displaySkills(cursor):
-        skills = cursor.execute("SELECT skill FROM skills WHERE id = ? AND job = ?""", [id, isJob]).fetchall()
+        skills = cursor.execute("SELECT skill FROM skills WHERE id = ? AND job = ?""", [id, table == "Job"]).fetchall()
         ui.displayList(skills, listBox)
 
     # Make UI.
@@ -142,7 +141,7 @@ def viewSkills(win, id, isJob):
     ui.button(win, "Add", accessDb(addSkill))
     listBox = ui.listBox(win, ["Skill name"])
     accessDb(displaySkills)()
-    win.title("Employee " + str(id) if (isJob == False) else "Job " + str(id))
+    win.title(table + " " + str(id))
 
 
 def addHoliday(win):
