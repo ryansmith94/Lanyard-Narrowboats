@@ -10,7 +10,7 @@ Lanyard Narrowboats, the bespoke business management system for Lanyard Narrowbo
 [Style Guide](https://github.com/ryansmith94/LanyardNarrowboats/blob/master/STYLE.md)    
 [Licence](https://github.com/ryansmith94/LanyardNarrowboats/blob/master/LICENCE)   
 
-**Dependencies**
-tkinter
-sqlite3
-python 3.3
+**Dependencies**   
+tkinter   
+sqlite3   
+python 3.3   
