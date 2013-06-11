@@ -7,7 +7,7 @@ def accessDb(fn):
         try:
             conn = sql(DB_LOCATION)
             cursor = conn.cursor()
-            cursor.execute("""PRAGMA foreign_keys=ON;""")
+            cursor.execute("PRAGMA foreign_keys=ON;")
             fn(cursor)
         except Exception as ex:
             ex = ex.args[0].replace("constraint ", "").replace(" failed", "")
@@ -24,7 +24,11 @@ def accessDb(fn):
 
 def viewHolidays(win):
     def displayHolidays(cursor):
-        holidays = cursor.execute("SELECT date, assigneeId, workHours FROM jobs WHERE status = 'Holiday' ORDER BY date DESC").fetchall()
+        holidays = cursor.execute("""SELECT date, assigneeId, workHours 
+            FROM jobs
+            WHERE status = 'Holiday'
+            ORDER BY date DESC
+        """).fetchall()
         ui.displayList(holidays, listBox)
 
     # Make UI.
@@ -42,14 +46,21 @@ def viewJobs(win):
     def clickStatus(cursor, newStatus):
         selected = int(listBox.curselection()[0])
         jobId = jobIds[selected]
-        cursor.execute("UPDATE jobs SET status = ?, date = DATE('now') WHERE jobId = ?", [newStatus, jobId])
+        cursor.execute("""UPDATE jobs
+            SET status = ?, date = DATE('now')
+            WHERE jobId = ?
+        """, [newStatus, jobId])
         if status.get() != newStatus:
             jobIds.pop(selected)
             listBox.delete(selected)
 
     def displayJobs(cursor):
         jobIds.clear()
-        jobs = cursor.execute("SELECT jobId, date, assigneeId, customerId, boatId, description FROM jobs WHERE status = ? ORDER BY date DESC", [status.get()]).fetchall()
+        jobs = cursor.execute("""SELECT jobId, date, assigneeId, customerId, boatId, description 
+            FROM jobs
+            WHERE status = ?
+            ORDER BY date DESC
+        """, [status.get()]).fetchall()
         jobIds.extend([job[0] for job in jobs])
         ui.displayList(jobs, listBox)
 
