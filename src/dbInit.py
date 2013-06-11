@@ -1,22 +1,18 @@
-import sqlite3
-# TODO: Add constraints.
-# TODO: Create test code for this file.
-conn = sqlite3.connect("narrowboats.db")
+from sqlite3 import connect as sql
+
+conn = sql("narrowboats.db")
 cursor = conn.cursor()
 
 # Drops all the tables before recreating them.
-cursor.execute("""DROP TABLE IF EXISTS customer""")
-cursor.execute("""DROP TABLE IF EXISTS job""")
-cursor.execute("""DROP TABLE IF EXISTS lease""")
-cursor.execute("""DROP TABLE IF EXISTS holidayBooking""")
-cursor.execute("""DROP TABLE IF EXISTS owner""")
-cursor.execute("""DROP TABLE IF EXISTS boat""")
-cursor.execute("""DROP TABLE IF EXISTS part""")
-cursor.execute("""DROP TABLE IF EXISTS jobPart""")
-cursor.execute("""DROP TABLE IF EXISTS holidayBoat""")
+cursor.execute("""DROP TABLE IF EXISTS customers""")
+cursor.execute("""DROP TABLE IF EXISTS jobs""")
+cursor.execute("""DROP TABLE IF EXISTS boats""")
+cursor.execute("""DROP TABLE IF EXISTS employees""")
+cursor.execute("""DROP TABLE IF EXISTS skills""")
+cursor.execute("""PRAGMA foreign_keys=ON;""")
 
-# create table
-cursor.execute("""CREATE TABLE customer (
+# Create tables.
+cursor.execute("""CREATE TABLE customers (
     customerId INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     address TEXT,
@@ -24,95 +20,64 @@ cursor.execute("""CREATE TABLE customer (
     phoneNumber VARCHAR2(11)
 )""")
 
-# http://stackoverflow.com/questions/4272908/sqlite-date-storage-and-conversion
-cursor.execute("""CREATE TABLE job (
-    jobId INT PRIMARY KEY,
-    customerId INT,
-    boatId INT,
-    jobDescription TEXT,
-    jobStatus TEXT,
-    jobDate DATE,
-    jobDateCompleted DATE,
-    price REAL,
-    paid BOOLEAN,
-    paymentInfo TEXT
+cursor.execute("""CREATE TABLE employees (
+    employeeId INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT
 )""")
 
-cursor.execute("""CREATE TABLE lease (
-    customerId INT NOT NULL,
-    boatId INT NOT NULL,
-    dateFrom DATE NOT NULL,
-    dateTo DATE NOT NULL,
-    mooringId INT NOT NULL,
-    datePurchased DATE NOT NULL,
-    price REAL NOT NULL,
-    vat INT NOT NULL,
-    package BOOLEAN DEFAULT 0,
-    paymentInfo TEXT NOT NULL,
-    CONSTRAINT pkey PRIMARY KEY (mooringId, datePurchased),
-    CONSTRAINT fkeyCustomer FOREIGN KEY (customerId) REFERENCES customer(customerId),
-    CONSTRAINT fkeyBoat FOREIGN KEY (boatId) REFERENCES boat(boatId)
-)""")
-
-cursor.execute("""CREATE TABLE holidayBooking (
-    boatId INT,
-    boatName TEXT,
-    dateTo DATE,
-    dateFrom DATE,
-    berth INT,
-    available BOOLEAN,
-    paymentInfo TEXT,
-    CONSTRAINT pkey PRIMARY KEY (boatId, dateFrom)
-)""")
-
-#cursor.execute("""CREATE TABLE owner (
-
-#)""")
-
-cursor.execute("""CREATE TABLE boat (
-    boatId INT PRIMARY KEY,
+cursor.execute("""CREATE TABLE boats (
+    boatId INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
-    description TEXT
+    ownerId INTEGER,
+    description TEXT,
+    CONSTRAINT fkeyOwner FOREIGN KEY (ownerId) REFERENCES customers(customerId)
 )""")
 
-cursor.execute("""CREATE TABLE part (
-    partId INT PRIMARY KEY,
-    partQuantity INT,
-    partDescription TEXT
+# http://stackoverflow.com/questions/4272908/sqlite-date-storage-and-conversion
+# customerId has been included because the owner of the boat does not necessarily have to be
+# the person paying to get the boat fixed. This also allows for multiple owners of the boat.
+cursor.execute("""CREATE TABLE jobs (
+    jobId INTEGER PRIMARY KEY AUTOINCREMENT,
+    customerId INTEGER,
+    boatId INTEGER,
+    assigneeId INTEGER,
+    workHours INTEGER NOT NULL,
+    description TEXT DEFAULT '',
+    status TEXT NOT NULL,
+    date DATE NOT NULL,
+    price REAL DEFAULT 0,
+    paymentInfo TEXT DEFAULT '',
+    CONSTRAINT fkeyCustomer FOREIGN KEY (customerId) REFERENCES customers(customerId),
+    CONSTRAINT fkeyBoat FOREIGN KEY (boatId) REFERENCES boats(boatId),
+    CONSTRAINT fkeyAssignee FOREIGN KEY (assigneeId) REFERENCES employees(employeeId),
+    CONSTRAINT limitHours CHECK ((workHours) > 0),
+    CONSTRAINT limitPrice CHECK ((price) >= 0),
+    CONSTRAINT limitStatus CHECK ((status) IN ('Holiday', 'Incomplete', 'Complete', 'Paid')),
+    CONSTRAINT formatDate CHECK ((date) LIKE '____-__-__'),
+    CONSTRAINT limitDate CHECK (DATE(date) >= DATE('now'))
 )""")
 
-cursor.execute("""CREATE TABLE jobPart (
-   jobId INT,
-   partId INT,
-   CONSTRAINT pkey PRIMARY KEY (jobId, partId)
+cursor.execute("""CREATE TABLE skills (
+    id INT,
+    skill TEXT,
+    job BOOLEAN,
+    PRIMARY KEY (id, skill, job)
 )""")
 
-cursor.execute("""CREATE TABLE holidayBoat (
-   boatId INT,
-   boatName TEXT,
-   purchaseDate DATE,
-   maxBerth INT,
-   CONSTRAINT pkey PRIMARY KEY (boatId, purchaseDate)
-)""")
+# Test Customers.
+cursor.execute("INSERT INTO customers(name, address, postCode, phoneNumber) VALUES(?, ?, ?, ?)", ["Truman Burbank", "11 Burbank Road, Seahaven", "SH1 11BP", "01998060590"])
+cursor.execute("INSERT INTO customers(name, address, postCode, phoneNumber) VALUES(?, ?, ?, ?)", ["Jack Sparrow", "1 First Street, London", "LN1 1FS", "02011052045"])
 
-# Example of how to add and retrieve data from the database.
-name = "John Smith"
-address = "Wheatley or summink"
-cursor.execute("""INSERT INTO customer(name, address, postCode, phoneNumber) VALUES (
-    ?,
-    ?,
-    "OX3 7JJ",
-    "01927364857"
-)""", [name, address])
+# Test Boats.
+cursor.execute("INSERT INTO boats(name, ownerId, description) VALUES (?, ?, ?)", ["Black Pearl", 2, "East Indiaman Galleon"])
+cursor.execute("INSERT INTO boats(name, ownerId, description) VALUES (?, ?, ?)", ["Barnacle", 2, "Pirate ship"])
 
-cursor.execute("""INSERT INTO customer(name, address, postCode, phoneNumber) VALUES (
-    ?,
-    ?,
-    "OX3 7JJ",
-    "12345678912"
-)""", [name, address])
+# Test Employees.
+cursor.execute("INSERT INTO employees(name) VALUES(?)", ["Alan Flowers"])
+cursor.execute("INSERT INTO employees(name) VALUES(?)", ["Jimmy"])
 
-print(cursor.execute("""SELECT * FROM customer""").fetchall()[1][4])
+# Test Jobs.
+cursor.execute("""INSERT INTO jobs(description, customerId, boatId, workHours, date, status, assigneeId) VALUES(?, ?, ?, ?, DATE('now'), 'Incomplete', ?)""", ["Broken engine.", 2, 2, 1, 1])
 
 # Commits and closes the database.
 cursor.close()
