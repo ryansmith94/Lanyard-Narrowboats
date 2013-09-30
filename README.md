@@ -5,3 +5,6 @@ Lanyard Narrowboats, the bespoke business management application for Lanyard Nar
 tkinter   
 sqlite3   
 python 3.3  
+
+**Note to Brookes**   
+If I'm in anyway providing answers for future students, that's your fault, stop being lazy and update your specification! If I'm breaking a rule by making this work available, I suggest you point me to the rule and make it easier to find in future!
